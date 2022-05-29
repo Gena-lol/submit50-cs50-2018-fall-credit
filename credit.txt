@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <cs50.h>
+ 
+int main()
+{
+    long long Number = get_long_long("Number: ");
+    long long NumberTemp = Number;
+    int KolCif = 0, OstDel = 0, OstDouble = 0, Temp=0, SumOst = 0, digitloop = 0, digittemp = 0, digit1 = 0, digit2 = 0;
+	bool validity;
+    
+    while (NumberTemp > 0)
+    {       
+        OstDel = NumberTemp % 10;
+ 
+        if (KolCif % 2 == 0)
+        {
+            SumOst = SumOst + OstDel ;
+        }
+        else
+        {
+            OstDouble = OstDel * 2;
+            Temp =  (OstDouble / 10) + (OstDouble % 10);
+            SumOst = SumOst + Temp;
+        }
+ 
+        NumberTemp = (NumberTemp - OstDel) / 10;
+        KolCif++;
+    }
+            // Validity control
+    if (SumOst % 10 == 0)
+    {
+    validity = true;
+    }
+    else 
+    {
+    validity = false;
+    }
+            // definition of the first digits
+    NumberTemp = Number; 
+    for (digitloop = 0; digitloop < (KolCif - 2); digitloop++)
+    {
+        NumberTemp = NumberTemp / 10;
+        digittemp = NumberTemp;
+    }    
+    digit1 = digittemp/10;
+    digit2 = digittemp;
+            // Choosing the type of card 
+    if (KolCif == 15 && (digit2 == 34 || digit2 == 37) && validity == true)
+    printf("AMEX\n");
+    else if (KolCif == 16 && digit1 == 4 && validity == true)
+    printf("VISA\n");
+    else if ((KolCif == 13 || KolCif == 16 ) && (51 <= digit2 && digit2 <= 55) && validity == true)
+    printf("MASTERCARD\n");
+    else
+    {
+        printf("INVALID\n");
+    }
+}
